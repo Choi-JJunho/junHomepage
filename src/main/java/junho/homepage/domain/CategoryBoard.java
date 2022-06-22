@@ -1,9 +1,12 @@
 package junho.homepage.domain;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 public class CategoryBoard {
     @Id @GeneratedValue
     @Column(name = "category_board_id")
