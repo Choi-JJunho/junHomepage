@@ -49,4 +49,13 @@ public class MemberServiceTest {
         return member;
     }
 
+    @Test
+    public void 사용자_삭제() throws Exception{
+        Member member = createMember();
+        memberRepository.deleteMember(member.getId());
+        Member one = memberRepository.findOne(member.getId());
+
+        assertEquals(null, one);
+    }
+
 }
