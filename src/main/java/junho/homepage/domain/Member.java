@@ -52,4 +52,8 @@ public class Member {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         return bCryptPasswordEncoder.matches(password, this.password);
     }
+
+    public void setMemberName(String name) {
+        this.name = name;
+    }
 }

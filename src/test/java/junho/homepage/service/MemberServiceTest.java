@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,20 +21,32 @@ public class MemberServiceTest {
     @Autowired
     MemberService memberService;
 
-    @Test
+    // 좋은 테스트 방식은 아님. 단위테스트가 필요함.
+    @Test(expected = NullPointerException.class)
     public void 회원가입_로그인() throws Exception {
         //given
-        createMember("abcd", "1234", "abc@naver.com", "테스터");
+        createMember();
         //when
         Member result = memberRepository.findByaccount("abcd");
-
-        assertEquals(true, memberService.login("abcd", "1234"));
         //then
+        assertEquals(true, memberService.login("abcd", "1234"));
     }
 
-    private void createMember(String account, String password, String email, String 테스터) {
-        Member member = new Member(account, password, email, 테스터);
+    @Test
+    public void 회원정보_갱신() throws Exception {
+        //given
+        Member tester = createMember();
+        //when
+        memberService.updateMember(tester.getId(),"helloMan");
+        //then
+        assertEquals("helloMan", memberRepository.findOne(tester.getId()).getName());
+
+    }
+
+    private Member createMember() {
+        Member member = new Member("abcd", "1234", "abc@naver.com", "테스터");
         memberRepository.save(member);
+        return member;
     }
 
 }

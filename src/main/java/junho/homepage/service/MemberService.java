@@ -14,7 +14,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public void signin(Member member) {
+    public void addMember(Member member) {
         if (member.getAccount() == null){
             throw new NullPointerException("아이디값이 비어있습니다.");
         } else if (memberRepository.findByaccount(member.getAccount()) != null) {
@@ -40,6 +40,10 @@ public class MemberService {
         }
     }
 
-
-
+    // 영속상태의 객체에 상태변화가 일어났으므로 변경감지로 인하여 준영속 엔티티가 수정됨.
+    @Transactional
+    public void updateMember(Long memberId, String name) {
+        Member member = memberRepository.findOne(memberId);
+        member.setMemberName(name);
+    }
 }
