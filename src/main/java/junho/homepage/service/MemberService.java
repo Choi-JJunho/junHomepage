@@ -14,6 +14,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    // TODO : RequestMemberDTO 따로 만들기
     public void addMember(Member member) {
         if (member.getAccount() == null){
             throw new NullPointerException("아이디값이 비어있습니다.");
@@ -26,7 +27,6 @@ public class MemberService {
         if (memberRepository.findByemail(member.getEmail()) != null) {
             throw new DuplicateKeyException("동일한 이메일이 존재합니다.");
         }
-
         memberRepository.save(member);
     }
 

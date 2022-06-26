@@ -22,7 +22,7 @@ public class MemberServiceTest {
     MemberService memberService;
 
     // 좋은 테스트 방식은 아님. 단위테스트가 필요함.
-    @Test(expected = NullPointerException.class)
+    @Test
     public void 회원가입_로그인() throws Exception {
         //given
         createMember();
@@ -43,12 +43,6 @@ public class MemberServiceTest {
 
     }
 
-    private Member createMember() {
-        Member member = new Member("abcd", "1234", "abc@naver.com", "테스터");
-        memberRepository.save(member);
-        return member;
-    }
-
     @Test
     public void 사용자_삭제() throws Exception{
         Member member = createMember();
@@ -56,6 +50,12 @@ public class MemberServiceTest {
         Member one = memberRepository.findOne(member.getId());
 
         assertEquals(null, one);
+    }
+
+    private Member createMember() {
+        Member member = new Member("abcd", "1234", "abc@naver.com", "테스터");
+        memberRepository.save(member);
+        return member;
     }
 
 }
