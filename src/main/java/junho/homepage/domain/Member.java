@@ -24,6 +24,7 @@ public class Member {
     private String email;
     private String name;
 
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
     private LocalDateTime deletedAt;
     private Boolean isDeleted;
@@ -40,6 +41,11 @@ public class Member {
         savePassword(password);
         this.email = email;
         this.name = name;
+    }
+
+    public Member(String account, String password) {
+        this.account = account;
+        this.password = password;
     }
 
     // 비즈니스 로직
