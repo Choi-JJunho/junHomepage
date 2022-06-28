@@ -1,4 +1,4 @@
-package junho.homepage.domain.member.request;
+package junho.homepage.domain.member;
 
 import lombok.Data;
 

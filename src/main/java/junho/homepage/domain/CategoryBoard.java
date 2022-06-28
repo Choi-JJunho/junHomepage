@@ -20,5 +20,6 @@ public class CategoryBoard {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 }

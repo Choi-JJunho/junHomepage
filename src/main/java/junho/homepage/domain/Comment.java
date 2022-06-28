@@ -15,6 +15,7 @@ public class Comment {
 
     private String content;
 
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
     private LocalDateTime deletedAt;
     private Boolean isDeleted;

@@ -32,8 +32,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private MemberStatus memberStatus;
 
-    @OneToMany
-    @JoinColumn(name = "board_id")
+    @OneToMany(mappedBy = "member")
     private List<Board> boards = new ArrayList<>();
 
     public Member(String account, String password, String email, String name) {

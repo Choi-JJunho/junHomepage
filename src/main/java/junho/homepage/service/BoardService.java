@@ -14,22 +14,20 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
-
-    // TODO : RequsetBoard DTO 따로 만들기
-    public void createBoard(Board board) {
+    public Long createBoard(Board board) {
         boardRepository.save(board);
+        Long id = board.getId();
+        return id;
     }
 
-    // TODO : Entity가 외부로 노출된다!! ResponseBoardDTO 만들기
     @Transactional(readOnly = true)
     public List<Board> SearchBoard(Long memberId) {
         return boardRepository.findByMember(memberId);
     }
 
+    // TODO : 기능구현
     @Transactional(readOnly = true)
     public void updateBoard(Board board){
-        Board board1 = new Board();
-
         boardRepository.save(board);
     }
 

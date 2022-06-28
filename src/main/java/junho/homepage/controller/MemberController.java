@@ -1,9 +1,9 @@
 package junho.homepage.controller;
 
 import junho.homepage.domain.Member;
-import junho.homepage.domain.member.request.CreateMemberRequest;
-import junho.homepage.domain.member.request.LoginRequest;
-import junho.homepage.domain.member.response.MemberDto;
+import junho.homepage.domain.member.CreateMemberRequest;
+import junho.homepage.domain.member.LoginRequest;
+import junho.homepage.domain.member.MemberDto;
 import junho.homepage.repository.MemberRepository;
 import junho.homepage.service.MemberService;
 import lombok.RequiredArgsConstructor;
