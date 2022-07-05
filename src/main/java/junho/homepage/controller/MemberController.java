@@ -5,8 +5,10 @@ import junho.homepage.domain.member.CreateMemberRequest;
 import junho.homepage.domain.member.LoginRequest;
 import junho.homepage.domain.member.MemberDto;
 import junho.homepage.repository.MemberRepository;
+import junho.homepage.service.JWTService;
 import junho.homepage.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,11 +17,14 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
 
     private final MemberRepository memberRepository;
+
+    private final JWTService jwtService;
 
     @GetMapping("/members")
     public List<MemberDto> members() {
@@ -38,12 +43,15 @@ public class MemberController {
         return new MemberDto(id, request.getEmail(), request.getName());
     }
 
-    // TODO : response Data 정형화
     @PostMapping("/login")
-    public MemberDto login(@RequestBody LoginRequest request) {
-        Member member1 = new Member(request.getAccount(), request.getPassword());
-        Long id = memberService.login(member1.getAccount(), member1.getPassword());
-        return new MemberDto(id);
+    public String login(@RequestBody LoginRequest request) throws Exception {
+        String resultJwt = "none";
+        Member member = new Member(request.getAccount(), request.getPassword());
+        Long id = memberService.login(member.getAccount(), member.getPassword());
+        if(id > 0) {
+            resultJwt = jwtService.createJwt(member);
+        }
+        return resultJwt;
     }
 }
 

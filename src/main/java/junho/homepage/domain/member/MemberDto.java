@@ -13,7 +13,4 @@ public class MemberDto {
         this.email = email;
         this.name = name;
     }
-    public MemberDto(Long id) {
-        this.id = id;
-    }
 }

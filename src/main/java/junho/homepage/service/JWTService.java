@@ -1,12 +1,14 @@
 package junho.homepage.service;
 
 import io.jsonwebtoken.*;
+import junho.homepage.domain.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
@@ -18,7 +20,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class JWTService {
 
-    private final String baseKey = "thisisdummykeythisisdummykeythisisdummykeythisisdummykeythisisdummykey";
+    @Value("${homepage.key}")
+    private String baseKey;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
     private Key createKey() {
@@ -28,22 +31,25 @@ public class JWTService {
         return signingKey;
     }
 
-    public String createJwt(HttpServletRequest request) throws Exception {
+    public String createJwt(Member member) throws Exception {
         Map<String, Object> headerMap = new HashMap<String, Object>();
         headerMap.put("typ", "JWT");
         headerMap.put("alg", "HS256");
 
         Map<String, Object> claims = new HashMap<String, Object>();
-        claims.put("name", request.getParameter("name"));
-        claims.put("id", request.getParameter("id"));
+        claims.put("id", member.getId());
+        claims.put("name", member.getName());
 
         Date expireTime = new Date();
         expireTime.setTime(expireTime.getTime() + 1000 * 60 * 1);
 
-        JwtBuilder builder = Jwts.builder().setHeader(headerMap).setClaims(claims).setExpiration(expireTime).signWith(createKey(), signatureAlgorithm);
+        JwtBuilder builder = Jwts.builder()
+                .setHeader(headerMap)
+                .setClaims(claims)
+                .setExpiration(expireTime)
+                .signWith(createKey(), signatureAlgorithm);
 
         String result = builder.compact();
-        System.out.println("serviceTester " + result);
         return result;
     }
 
@@ -54,8 +60,6 @@ public class JWTService {
                     .build()
                     .parseClaimsJws(jwt)
                     .getBody();
-            System.out.println("Id : " + claims.get("id"));
-            System.out.println("Name : " + claims.get("name"));
         } catch (ExpiredJwtException e) {
             e.printStackTrace();
             return false;
@@ -64,30 +68,5 @@ public class JWTService {
             return false;
         }
         return true;
-    }
-
-    // for test
-    public String createJwt() throws Exception {
-        Map<String, Object> headerMap = new HashMap<String, Object>();
-        headerMap.put("typ", "JWT");
-        headerMap.put("alg", "HS256");
-
-        Map<String, Object> claims = new HashMap<String, Object>();
-        claims.put("name", "test");
-        claims.put("id", "143");
-
-        Date expireTime = new Date();
-        expireTime.setTime(expireTime.getTime() + 1000 * 60 * 1);
-
-
-        JwtBuilder builder = Jwts.builder()
-                .setHeader(headerMap)
-                .setClaims(claims)
-                .setExpiration(expireTime)
-                .signWith(createKey(), signatureAlgorithm);
-
-        String result = builder.compact();
-        System.out.println("serviceTester " + result);
-        return builder.compact();
     }
 }

@@ -46,7 +46,12 @@ public class MemberService {
         if(member == null) {
             throw new NullPointerException("존재하지 않는 아이디입니다");
         } else {
-            return member.matchPassword(password) ? member.getId() : -1;
+            if(member.matchPassword(password)) {
+                return member.getId();
+            }
+            else {
+                return (long) -1;
+            }
         }
     }
 
