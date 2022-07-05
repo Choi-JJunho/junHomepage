@@ -22,9 +22,12 @@ public class Board {
     private String title;
     private String description;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Long hitCount;
+
+    @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
+    @Column
     private LocalDateTime deletedAt;
 
     private Boolean isDeleted;
@@ -45,5 +48,10 @@ public class Board {
         this.title = title;
         this.description = description;
         this.member = member;
+    }
+
+    public void updateBoard(String title, String description) {
+        this.title = title;
+        this.description = description;
     }
 }
